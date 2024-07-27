@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'clients.dart'; // Import the Clients screen
+import 'package:smartfin_guide/Screens/Clients.dart';
+import 'package:smartfin_guide/Screens/InboxScreen.dart';
+import 'package:smartfin_guide/Screens/NotifcationScreen.dart'; // Import the NotificationScreen
+import 'package:smartfin_guide/Screens/UpdateScreen.dart'; // Import the UpdateScreen
+import 'package:smartfin_guide/Screens/ProfileScreen.dart'; // Import the ProfileScreen
 
-class AdminHomeScreen extends StatelessWidget {
-  AdminHomeScreen({super.key});
+class AdminHomeScreen extends StatefulWidget {
+  @override
+  _AdminHomeScreenState createState() => _AdminHomeScreenState();
+}
+
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  int _currentIndex = 0;
 
   final List<String> catNames = [
     'All clients',
@@ -23,36 +32,12 @@ class AdminHomeScreen extends StatelessWidget {
   ];
 
   final List<Icon> catIcons = [
-    Icon(
-      Icons.people,
-      color: Colors.white,
-      size: 30,
-    ),
-    Icon(
-      Icons.notification_add_outlined,
-      color: Colors.white,
-      size: 30,
-    ),
-    Icon(
-      Icons.meeting_room,
-      color: Colors.white,
-      size: 30,
-    ),
-    Icon(
-      Icons.import_export_outlined,
-      color: Colors.white,
-      size: 30,
-    ),
-    Icon(
-      Icons.new_label_rounded,
-      color: Colors.white,
-      size: 30,
-    ),
-    Icon(
-      Icons.delete,
-      color: Colors.white,
-      size: 30,
-    ),
+    Icon(Icons.people, color: Colors.white, size: 30),
+    Icon(Icons.notification_add_outlined, color: Colors.white, size: 30),
+    Icon(Icons.meeting_room, color: Colors.white, size: 30),
+    Icon(Icons.import_export_outlined, color: Colors.white, size: 30),
+    Icon(Icons.new_label_rounded, color: Colors.white, size: 30),
+    Icon(Icons.delete, color: Colors.white, size: 30),
   ];
 
   final List<String> clientImages = [
@@ -90,196 +75,216 @@ class AdminHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        physics: BouncingScrollPhysics(),
+      body: IndexedStack(
+        index: _currentIndex,
         children: [
-          Container(
-            padding: EdgeInsets.only(top: 15, bottom: 10, left: 15, right: 15),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 15, bottom: 10, left: 15, right: 15),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.dashboard_rounded,
-                      color: Colors.white,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.dashboard_rounded, color: Colors.white),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) => NotificationScreen(),
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  const begin = Offset(1.0, 0.0);
+                                  const end = Offset.zero;
+                                  const curve = Curves.easeInOut;
+                                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                  var offsetAnimation = animation.drive(tween);
+                                  return SlideTransition(position: offsetAnimation, child: child);
+                                },
+                              ),
+                            );
+                          },
+                          child: Icon(Icons.notifications, color: Colors.white),
+                        ),
+                      ],
                     ),
-                    Icon(
-                      Icons.notifications,
-                      color: Colors.white,
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: EdgeInsets.only(left: 3, bottom: 15),
+                      child: Text(
+                        'Hi, Chazz Wolf',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5, bottom: 20),
+                      width: MediaQuery.of(context).size.width,
+                      height: 45,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Search',
+                          hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+                          prefixIcon: Icon(Icons.search, color: Colors.black.withOpacity(0.4)),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 3, bottom: 15),
-                  child: Text(
-                    'Hi, Chazz Wolf',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5, bottom: 20),
-                  width: MediaQuery.of(context).size.width,
-                  height: 45,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search',
-                      hintStyle:
-                          TextStyle(color: Colors.black.withOpacity(0.4)),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.black.withOpacity(0.4),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-            child: Column(
-              children: [
-                GridView.builder(
-                    itemCount: catNames.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1.1,
-                    ),
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              color: catColors[index],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: catIcons[index],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            catNames[index],
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+                child: Column(
                   children: [
-                    Text('Recent Clients',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600)),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) => Clients(),
-                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                              const begin = Offset(1.0, 0.0);
-                              const end = Offset.zero;
-                              const curve = Curves.ease;
-
-                              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            },
+                    GridView.builder(
+                        itemCount: catNames.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 1.1,
+                        ),
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: catColors[index],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(child: catIcons[index]),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                catNames[index],
+                                style: TextStyle(fontSize: 12),
+                              )
+                            ],
+                          );
+                        }),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Recent Clients', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) => Clients(),
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  const begin = Offset(1.0, 0.0);
+                                  const end = Offset.zero;
+                                  const curve = Curves.easeInOut;
+                                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                  var offsetAnimation = animation.drive(tween);
+                                  return SlideTransition(position: offsetAnimation, child: child);
+                                },
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text('See all', style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.w600)),
+                              Icon(Icons.arrow_forward, color: Colors.red),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: clientNames.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) => InboxScreen(
+                                  clientName: clientNames[index],
+                                  clientImage: clientImages[index],
+                                ),
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  const begin = Offset(1.0, 0.0);
+                                  const end = Offset.zero;
+                                  const curve = Curves.easeInOut;
+                                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                  var offsetAnimation = animation.drive(tween);
+                                  return SlideTransition(position: offsetAnimation, child: child);
+                                },
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(clientImages[index]),
+                              ),
+                              title: Text(clientNames[index]),
+                              subtitle: Text(clientMessages[index]),
+                              trailing: Text(clientTimestamps[index]),
+                            ),
                           ),
                         );
                       },
-                      child: Row(
-                        children: [
-                          Text(
-                            'See all',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.red,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Icon(Icons.arrow_forward, color: Colors.red),
-                        ],
-                      ),
                     ),
                   ],
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: clientNames.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 0),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              clientImages[index]),
-                        ),
-                        title: Text(clientNames[index]),
-                        subtitle: Text(clientMessages[index]),
-                        trailing: Text(clientTimestamps[index]),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          UpdateScreen(), // Placeholder screen for future functionality
+          ProfileScreen(), // Profile screen
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.grey,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.update),
-            label: 'Updates',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: 0, // Change this to manage selected tab
-      ),
+     bottomNavigationBar: BottomNavigationBar(
+  currentIndex: _currentIndex,
+  onTap: (index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  },
+  items: [
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.update),
+      label: 'Updates',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'Profile',
+    ),
+  ],
+  selectedItemColor: Colors.red,
+  unselectedItemColor: Colors.grey,
+  type: BottomNavigationBarType.fixed, 
+),
+
     );
   }
 }

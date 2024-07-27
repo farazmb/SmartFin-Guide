@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartfin_guide/Screens/AddClientScreen.dart';
-import 'AddClientScreen.dart'; // Import the new screen
+import 'package:smartfin_guide/Screens/InboxScreen.dart'; // Import the InboxScreen
 
 class Clients extends StatelessWidget {
   final List<String> allClientImages = List.generate(
@@ -29,6 +29,7 @@ class Clients extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('All Clients'),
+        backgroundColor: Colors.red,
       ),
       body: Column(
         children: [
@@ -46,17 +47,54 @@ class Clients extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemCount: allClientNames.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 5), // Reduced vertical space
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(allClientImages[index]),
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            InboxScreen(
+                              clientName: allClientNames[index],
+                              clientImage: allClientImages[index],
+                            ),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.easeInOut;
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          var offsetAnimation = animation.drive(tween);
+                          return SlideTransition(position: offsetAnimation, child: child);
+                        },
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                    child: Card(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(allClientImages[index]),
+                        ),
+                        title: Text(
+                          allClientNames[index],
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(allClientMessages[index]),
+                        trailing: Text(
+                          allClientTimestamps[index],
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
                     ),
-                    title: Text(allClientNames[index]),
-                    subtitle: Text(allClientMessages[index]),
-                    trailing: Text(allClientTimestamps[index]),
                   ),
                 );
               },
@@ -68,7 +106,17 @@ class Clients extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddClientScreen()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => AddClientScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                const curve = Curves.easeInOut;
+                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                var offsetAnimation = animation.drive(tween);
+                return SlideTransition(position: offsetAnimation, child: child);
+              },
+            ),
           );
         },
         child: Icon(Icons.add),
