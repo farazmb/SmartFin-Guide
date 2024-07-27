@@ -1,11 +1,47 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:smartfin_guide/Authentication/LoginPage.dart';
 import 'package:smartfin_guide/Authentication/signup.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  Future<UserCredential?> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<UserCredential?> _signInWithApple() async {
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+      );
+
+      final credential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +88,20 @@ class HomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildSocialIcon('assets/google.png', () {
-                  print('Google clicked');
+                _buildSocialIcon('assets/google.png', () async {
+                  final user = await _signInWithGoogle();
+                  if (user != null) {
+                    // Navigate to another screen if needed
+                    print('Google sign-in successful');
+                  }
                 }),
                 SizedBox(width: 20),
-                _buildSocialIcon('assets/facebook.png', () {
-                  print('Facebook clicked');
-                }),
-                SizedBox(width: 20),
-                _buildSocialIcon('assets/apple.png', () {
-                  print('Apple clicked');
+                _buildSocialIcon('assets/apple.png', () async {
+                  final user = await _signInWithApple();
+                  if (user != null) {
+                    // Navigate to another screen if needed
+                    print('Apple sign-in successful');
+                  }
                 }),
               ],
             ),
@@ -100,24 +140,24 @@ class HomePage extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => SignUpPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => SignUpPage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.ease;
 
-          final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          final offsetAnimation = animation.drive(tween);
+                          final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          final offsetAnimation = animation.drive(tween);
 
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-      ),
-    );
+                          return SlideTransition(
+                            position: offsetAnimation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
                   },
                   child: Text('Sign Up'),
                 ),

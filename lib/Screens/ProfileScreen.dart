@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smartfin_guide/Screens/About.dart';
 import 'package:smartfin_guide/Screens/ChangePasswordScreen.dart';
 import 'package:smartfin_guide/Screens/EditProfileScreen.dart';
+import 'package:smartfin_guide/main.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -59,11 +61,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _toggleTheme() {
+    final themeMode = Theme.of(context).brightness == Brightness.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
+    MyApp.of(context)?.setThemeMode(themeMode);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        automaticallyImplyLeading: false,
+        title: Text('Profile', style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -97,7 +107,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 35,
                             padding: EdgeInsets.all(0),
                             decoration: BoxDecoration(
-                              
                               shape: BoxShape.circle,
                               color: Colors.black.withOpacity(0.4),
                             ),
@@ -119,55 +128,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // List Tiles
             ListTile(
               leading: Icon(Icons.person),
-              title: Text('Edit Profile'),
+              iconColor: Colors.red,
+              title: Text('Edit Profile', style: TextStyle(fontSize: 18)),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                  _createSlidePageRoute(EditProfileScreen()),
                 );
               },
             ),
             ListTile(
               leading: Icon(Icons.notifications),
-              title: Text('Notifications'),
+              iconColor: Colors.red,
+              title: Text('Notifications', style: TextStyle(fontSize: 18)),
               onTap: () {
                 // Implement notifications functionality
               },
             ),
             ListTile(
               leading: Icon(Icons.language),
-              title: Text('Language'),
+              iconColor: Colors.red,
+              title: Text('Language', style: TextStyle(fontSize: 18)),
               onTap: () {
                 // Implement language selection functionality
               },
             ),
             ListTile(
               leading: Icon(Icons.brightness_6),
-              title: Text('Theme'),
-              onTap: () {
-                // Implement theme selection functionality
-              },
+              title: Text('Theme', style: TextStyle(fontSize: 18)),
+              iconColor: Colors.red,
+              onTap: _toggleTheme, // Toggle theme when tapped
             ),
             ListTile(
               leading: Icon(Icons.info),
-              title: Text('About'),
+              title: Text('About', style: TextStyle(fontSize: 18)),
+              iconColor: Colors.red,
               onTap: () {
-                // Implement about functionality
+                Navigator.push(
+                  context,
+                  _createSlidePageRoute(AboutScreen()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.lock),
-              title: Text('Change Password'),
+              title: Text('Change Password', style: TextStyle(fontSize: 18)),
+              iconColor: Colors.red,
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
+                  _createSlidePageRoute(ChangePasswordScreen()),
                 );
               },
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              iconColor: Colors.red,
+              title: Text('Logout', style: TextStyle(fontSize: 18)),
               onTap: () {
                 // Implement logout functionality
               },
@@ -175,6 +192,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  PageRouteBuilder _createSlidePageRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+        var tween = Tween(begin: begin, end: end);
+        var curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
+        var offsetAnimation = tween.animate(curvedAnimation);
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
     );
   }
 }

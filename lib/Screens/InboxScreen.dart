@@ -4,8 +4,9 @@ import 'package:file_picker/file_picker.dart';
 class InboxScreen extends StatefulWidget {
   final String clientName;
   final String clientImage;
+  late String clientMessages;
 
-  InboxScreen({required this.clientName, required this.clientImage});
+  InboxScreen({required this.clientName, required this.clientImage, required clientMessages});
 
   @override
   _InboxScreenState createState() => _InboxScreenState();

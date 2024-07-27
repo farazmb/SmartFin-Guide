@@ -10,6 +10,7 @@
 analyzer:
   errors:
     prefer_const_literals_to_create_immutables: ignore
+    unused_field: ignore ignore
 include: pack ignoreage:flutter_lints/flutter.yaml
 
 linter:

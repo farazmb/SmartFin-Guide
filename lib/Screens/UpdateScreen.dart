@@ -13,7 +13,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Send Update'),
+        automaticallyImplyLeading: false,
+        title: Text('Send Update', style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.red,
       ),
       body: Padding(

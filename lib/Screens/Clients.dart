@@ -1,34 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:smartfin_guide/Screens/AddClientScreen.dart';
-import 'package:smartfin_guide/Screens/InboxScreen.dart'; // Import the InboxScreen
+import 'package:smartfin_guide/Screens/InboxScreen.dart';
 
 class Clients extends StatelessWidget {
-  final List<String> allClientImages = List.generate(
-    15,
-    (index) =>
-        'https://i.pinimg.com/236x/da/fd/f2/dafdf25168edcb2f0e1d8702797946cc.jpg',
-  );
-
-  final List<String> allClientNames = List.generate(
-    15,
-    (index) => 'Client ${index + 1}',
-  );
-
-  final List<String> allClientMessages = List.generate(
-    15,
-    (index) => 'Message ${index + 1}',
-  );
-
-  final List<String> allClientTimestamps = List.generate(
-    15,
-    (index) => 'Time ${index + 1}',
-  );
+  final List<Map<String, String>> clientData = [
+    {
+      'image': 'https://randomuser.me/api/portraits/men/1.jpg',
+      'name': 'John Doe',
+      'message': 'Hey, how are you doing?',
+      'timestamp': '10:15 AM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/1.jpg',
+      'name': 'Anna Smith',
+      'message': 'Just checking in!',
+      'timestamp': '11:20 AM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/men/2.jpg',
+      'name': 'Louis Johnson',
+      'message': 'Can we meet this week?',
+      'timestamp': '12:05 PM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/2.jpg',
+      'name': 'Marie Brown',
+      'message': 'I received your package.',
+      'timestamp': '1:45 PM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/men/3.jpg',
+      'name': 'Michael Davis',
+      'message': 'Let\'s schedule a call.',
+      'timestamp': '2:30 PM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/3.jpg',
+      'name': 'Soha Ahmed',
+      'message': 'I have a question about the project.',
+      'timestamp': '3:10 PM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/men/4.jpg',
+      'name': 'Junaid Khan',
+      'message': 'I will be late for the meeting.',
+      'timestamp': '4:00 PM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/men/5.jpg',
+      'name': 'Brad Lee',
+      'message': 'Can you send me the report?',
+      'timestamp': '4:45 PM',
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/4.jpg',
+      'name': 'Webster Clark',
+      'message': 'Thank you for your help!',
+      'timestamp': '5:30 PM',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Clients'),
+        foregroundColor: Colors.white,
+        title: Text('All Clients', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),),
         backgroundColor: Colors.red,
       ),
       body: Column(
@@ -48,8 +85,9 @@ class Clients extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: allClientNames.length,
+              itemCount: clientData.length,
               itemBuilder: (context, index) {
+                final client = clientData[index];
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -57,8 +95,9 @@ class Clients extends StatelessWidget {
                       PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) =>
                             InboxScreen(
-                              clientName: allClientNames[index],
-                              clientImage: allClientImages[index],
+                              clientName: client['name']!,
+                              clientImage: client['image']!,
+                              clientMessages: client['message'],
                             ),
                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
                           const begin = Offset(1.0, 0.0);
@@ -82,15 +121,15 @@ class Clients extends StatelessWidget {
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(allClientImages[index]),
+                          backgroundImage: NetworkImage(client['image']!),
                         ),
                         title: Text(
-                          allClientNames[index],
+                          client['name']!,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(allClientMessages[index]),
+                        subtitle: Text(client['message']!),
                         trailing: Text(
-                          allClientTimestamps[index],
+                          client['timestamp']!,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
