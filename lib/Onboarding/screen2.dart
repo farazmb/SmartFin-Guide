@@ -52,7 +52,7 @@ class Screen2 extends StatelessWidget {
                           begin: Offset(1.0, 0.0),
                           end: Offset.zero,
                         ).animate(animation),
-                        child: HomePage(),
+                        child: MainAuth(),
                       );
                     },
                   ),

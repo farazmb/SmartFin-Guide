@@ -177,7 +177,7 @@ class SignUpPage extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+                              pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                 const begin = Offset(1.0, 0.0);
                                 const end = Offset.zero;

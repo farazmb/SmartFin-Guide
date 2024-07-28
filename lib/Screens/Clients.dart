@@ -1,165 +1,191 @@
 import 'package:flutter/material.dart';
-import 'package:smartfin_guide/Screens/AddClientScreen.dart';
 import 'package:smartfin_guide/Screens/InboxScreen.dart';
 
-class Clients extends StatelessWidget {
-  final List<Map<String, String>> clientData = [
-    {
-      'image': 'https://randomuser.me/api/portraits/men/1.jpg',
-      'name': 'John Doe',
-      'message': 'Hey, how are you doing?',
-      'timestamp': '10:15 AM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/women/1.jpg',
-      'name': 'Anna Smith',
-      'message': 'Just checking in!',
-      'timestamp': '11:20 AM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/men/2.jpg',
-      'name': 'Louis Johnson',
-      'message': 'Can we meet this week?',
-      'timestamp': '12:05 PM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/women/2.jpg',
-      'name': 'Marie Brown',
-      'message': 'I received your package.',
-      'timestamp': '1:45 PM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/men/3.jpg',
-      'name': 'Michael Davis',
-      'message': 'Let\'s schedule a call.',
-      'timestamp': '2:30 PM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/women/3.jpg',
-      'name': 'Soha Ahmed',
-      'message': 'I have a question about the project.',
-      'timestamp': '3:10 PM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/men/4.jpg',
-      'name': 'Junaid Khan',
-      'message': 'I will be late for the meeting.',
-      'timestamp': '4:00 PM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/men/5.jpg',
-      'name': 'Brad Lee',
-      'message': 'Can you send me the report?',
-      'timestamp': '4:45 PM',
-    },
-    {
-      'image': 'https://randomuser.me/api/portraits/women/4.jpg',
-      'name': 'Webster Clark',
-      'message': 'Thank you for your help!',
-      'timestamp': '5:30 PM',
-    },
+class Clients extends StatefulWidget {
+  @override
+  _ClientsState createState() => _ClientsState();
+}
+
+class _ClientsState extends State<Clients> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  final List<String> clientImages = [
+    'https://i.pinimg.com/236x/da/fd/f2/dafdf25168edcb2f0e1d8702797946cc.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCo5rBr2N6uQKaltnIgwzmdJxCBRhodVB-sQ&s',
+    'https://media.glamourmagazine.co.uk/photos/643911c5faffaaf0fce7d598/1:1/w_1280,h_1280,c_limit/SOFT%20GIRL%20AESTHETIC%20140423%20rachelteetyler_L.jpeg',
+    'https://knowledgeenthusiast.com/wp-content/uploads/2022/04/pexels-photo-6694422.jpeg',
+    'https://i.pinimg.com/236x/da/fd/f2/dafdf25168edcb2f0e1d8702797946cc.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCo5rBr2N6uQKaltnIgwzmdJxCBRhodVB-sQ&s',
+    'https://media.glamourmagazine.co.uk/photos/643911c5faffaaf0fce7d598/1:1/w_1280,h_1280,c_limit/SOFT%20GIRL%20AESTHETIC%20140423%20rachelteetyler_L.jpeg',
+    'https://knowledgeenthusiast.com/wp-content/uploads/2022/04/pexels-photo-6694422.jpeg',
+    'https://i.pinimg.com/236x/da/fd/f2/dafdf25168edcb2f0e1d8702797946cc.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCo5rBr2N6uQKaltnIgwzmdJxCBRhodVB-sQ&s',
+    'https://media.glamourmagazine.co.uk/photos/643911c5faffaaf0fce7d598/1:1/w_1280,h_1280,c_limit/SOFT%20GIRL%20AESTHETIC%20140423%20rachelteetyler_L.jpeg',
+    'https://knowledgeenthusiast.com/wp-content/uploads/2022/04/pexels-photo-6694422.jpeg',
+    'https://i.pinimg.com/236x/da/fd/f2/dafdf25168edcb2f0e1d8702797946cc.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCo5rBr2N6uQKaltnIgwzmdJxCBRhodVB-sQ&s',
+    'https://media.glamourmagazine.co.uk/photos/643911c5faffaaf0fce7d598/1:1/w_1280,h_1280,c_limit/SOFT%20GIRL%20AESTHETIC%20140423%20rachelteetyler_L.jpeg',
+  ];
+
+  final List<String> clientMessages = [
+    'Can we meet today?',
+    'Sure thing boss..!',
+    'How\'s my case?',
+    'Submit it by tomorrow',
+    'This needs to be discussed',
+    'Can we meet today?',
+    'Sure thing boss..!',
+    'How\'s my case?',
+    'Submit it by tomorrow',
+    'This needs to be discussed',
+    'Can we meet today?',
+    'Sure thing boss..!',
+    'How\'s my case?',
+    'Submit it by tomorrow',
+    'This needs to be discussed',
+  ];
+
+  final List<String> clientNames = [
+    'Soha',
+    'John',
+    'Liza Ann',
+    'Webster',
+    'Anna',
+    'Soha',
+    'John',
+    'Liza Ann',
+    'Webster',
+    'Anna',
+    'Soha',
+    'John',
+    'Liza Ann',
+    'Webster',
+    'Anna',
+  ];
+
+  final List<String> clientTimestamps = [
+    '12:01 PM',
+    '1:32 PM',
+    '11:10 PM',
+    '10:31 PM',
+    '10:31 AM',
+    '12:01 PM',
+    '1:32 PM',
+    '11:10 PM',
+    '10:31 PM',
+    '10:31 AM',
+    '12:01 PM',
+    '1:32 PM',
+    '11:10 PM',
+    '10:31 PM',
+    '10:31 AM',
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text.toLowerCase();
+    });
+  }
+
+  List<Map<String, String>> _filterClients() {
+    return List.generate(clientNames.length, (index) {
+      return {
+        'image': clientImages[index],
+        'name': clientNames[index],
+        'message': clientMessages[index],
+        'timestamp': clientTimestamps[index],
+      };
+    }).where((client) {
+      return client['name']!.toLowerCase().contains(_searchQuery);
+    }).toList();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var filteredClients = _filterClients();
+
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: Text('All Clients', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),),
-        backgroundColor: Colors.red,
+        title: Text('Clients'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search clients...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: clientData.length,
-              itemBuilder: (context, index) {
-                final client = clientData[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            InboxScreen(
-                              clientName: client['name']!,
-                              clientImage: client['image']!,
-                              clientMessages: client['message'],
-                            ),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          const begin = Offset(1.0, 0.0);
-                          const end = Offset.zero;
-                          const curve = Curves.easeInOut;
-                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                          var offsetAnimation = animation.drive(tween);
-                          return SlideTransition(position: offsetAnimation, child: child);
-                        },
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredClients.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  InboxScreen(
+                            userImage: filteredClients[index]['image']!,
+                            userName: filteredClients[index]['name']!,
+                          ),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1.0, 0.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            var offsetAnimation = animation.drive(tween);
+                            return SlideTransition(
+                                position: offsetAnimation, child: child);
+                          },
+                        ),
+                      );
+                    },
                     child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
                       child: ListTile(
-                        contentPadding: EdgeInsets.all(10),
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(client['image']!),
+                          backgroundImage:
+                              NetworkImage(filteredClients[index]['image']!),
+                          radius: 25,
                         ),
-                        title: Text(
-                          client['name']!,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(client['message']!),
-                        trailing: Text(
-                          client['timestamp']!,
-                          style: TextStyle(color: Colors.grey),
-                        ),
+                        title: Text(filteredClients[index]['name']!),
+                        subtitle: Text(filteredClients[index]['message']!),
+                        trailing: Text(filteredClients[index]['timestamp']!),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => AddClientScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                const begin = Offset(1.0, 0.0);
-                const end = Offset.zero;
-                const curve = Curves.easeInOut;
-                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                var offsetAnimation = animation.drive(tween);
-                return SlideTransition(position: offsetAnimation, child: child);
-              },
-            ),
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.red,
+          ],
+        ),
       ),
     );
   }
