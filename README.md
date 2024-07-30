@@ -1,4 +1,4 @@
-# smartfin_guide
+# SmartFin Guid
 
 A new Flutter project.
 
