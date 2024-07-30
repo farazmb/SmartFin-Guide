@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartfin_guide/Screens/OnBoarding.dart';
 import 'package:smartfin_guide/Screens/splashScreen.dart';
+import 'package:smartfin_guide/Authentication/MainAuth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +22,25 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.light;
+  bool _onboardingSeen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboardingSeen();
+  }
 
   void setThemeMode(ThemeMode themeMode) {
     setState(() {
       _themeMode = themeMode;
+    });
+  }
+
+  Future<void> _checkOnboardingSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool seen = prefs.getBool('onboarding_seen') ?? false;
+    setState(() {
+      _onboardingSeen = seen;
     });
   }
 
@@ -44,7 +62,7 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.red,
         ),
       ),
-      home: SplashScreen(),
+      home: _onboardingSeen ? SplashScreen() : OnboardingScreen(),
     );
   }
 }

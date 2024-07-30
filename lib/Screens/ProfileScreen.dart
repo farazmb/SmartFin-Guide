@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Add this import
+import 'package:smartfin_guide/Authentication/LoginPage.dart';
 import 'package:smartfin_guide/Screens/About.dart';
 import 'package:smartfin_guide/Screens/ChangePasswordScreen.dart';
 import 'package:smartfin_guide/Screens/EditProfileScreen.dart';
-import 'package:smartfin_guide/main.dart';
+import 'package:smartfin_guide/main.dart'; // Import your login page here
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -68,12 +70,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     MyApp.of(context)?.setThemeMode(themeMode);
   }
 
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Clear all stored data
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()), // Replace with your login page
+      (route) => false, // Remove all previous routes
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Profile', style: TextStyle(color: Colors.white),),
+        title: Text('Profile', style: TextStyle(color: Colors.white)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -185,9 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: Icon(Icons.logout),
               iconColor: Colors.red,
               title: Text('Logout', style: TextStyle(fontSize: 18)),
-              onTap: () {
-                // Implement logout functionality
-              },
+              onTap: _logout, // Call logout functionality
             ),
           ],
         ),

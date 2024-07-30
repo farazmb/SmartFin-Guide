@@ -129,8 +129,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               physics: BouncingScrollPhysics(),
               children: [
                 Container(
-                  padding:
-                      EdgeInsets.only(top: 15, bottom: 10, left: 15, right: 15),
+                  padding: EdgeInsets.only(top: 15, bottom: 10, left: 15, right: 15),
                   decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.only(
@@ -145,8 +144,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(widget.user.photoURL!),
+                            backgroundImage: widget.user.photoURL != null
+                                ? NetworkImage(widget.user.photoURL!)
+                                : AssetImage('assets/default_avatar.png') as ImageProvider,
                             radius: 20,
                           ),
                           GestureDetector(
@@ -154,27 +154,19 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      NotificationScreen(),
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
+                                  pageBuilder: (context, animation, secondaryAnimation) => NotificationScreen(),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                     const begin = Offset(1.0, 0.0);
                                     const end = Offset.zero;
                                     const curve = Curves.easeInOut;
-                                    var tween = Tween(begin: begin, end: end)
-                                        .chain(CurveTween(curve: curve));
-                                    var offsetAnimation =
-                                        animation.drive(tween);
-                                    return SlideTransition(
-                                        position: offsetAnimation,
-                                        child: child);
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                    var offsetAnimation = animation.drive(tween);
+                                    return SlideTransition(position: offsetAnimation, child: child);
                                   },
                                 ),
                               );
                             },
-                            child:
-                                Icon(Icons.notifications, color: Colors.white),
+                            child: Icon(Icons.notifications, color: Colors.white),
                           ),
                         ],
                       ),
@@ -182,7 +174,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       Padding(
                         padding: EdgeInsets.only(left: 3, bottom: 15),
                         child: Text(
-                          'Hi, ${widget.user.displayName}',
+                          'Hi, ${widget.user.displayName ?? 'User'}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -204,8 +196,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Search',
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 17),
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: 17),
                             prefixIcon: Icon(Icons.search, color: Colors.black),
                           ),
                         ),
@@ -233,21 +224,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      Clients(),
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
+                                  pageBuilder: (context, animation, secondaryAnimation) => Clients(),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                     const begin = Offset(1.0, 0.0);
                                     const end = Offset.zero;
                                     const curve = Curves.easeInOut;
-                                    var tween = Tween(begin: begin, end: end)
-                                        .chain(CurveTween(curve: curve));
-                                    var offsetAnimation =
-                                        animation.drive(tween);
-                                    return SlideTransition(
-                                        position: offsetAnimation,
-                                        child: child);
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                    var offsetAnimation = animation.drive(tween);
+                                    return SlideTransition(position: offsetAnimation, child: child);
                                   },
                                 ),
                               );
@@ -267,122 +251,79 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 Text(
                                   catNames[index],
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 13),
+                                  style: TextStyle(color: Colors.black, fontSize: 13),
                                 ),
                               ],
                             ),
                           );
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 35, bottom: 5, left: 5, right: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Recent Clients',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        Clients(),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      const begin = Offset(1.0, 0.0);
-                                      const end = Offset.zero;
-                                      const curve = Curves.easeInOut;
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-                                      var offsetAnimation =
-                                          animation.drive(tween);
-                                      return SlideTransition(
-                                          position: offsetAnimation,
-                                          child: child);
-                                    },
-                                  ),
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'View More',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  SizedBox(width: 3),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.grey,
-                                    size: 12,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Recent Clients',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: filteredClients.length,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      InboxScreen(
-                                    clientImage: filteredClients[index]['image']!,
-                                    clientName: filteredClients[index]['name']!,
-                                    clientMessages: clientMessages[index],
-                                  ),
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
-                                    const begin = Offset(1.0, 0.0);
-                                    const end = Offset.zero;
-                                    const curve = Curves.easeInOut;
-                                    var tween = Tween(begin: begin, end: end)
-                                        .chain(CurveTween(curve: curve));
-                                    var offsetAnimation =
-                                        animation.drive(tween);
-                                    return SlideTransition(
-                                        position: offsetAnimation,
-                                        child: child);
-                                  },
-                                ),
-                              );
-                            },
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    filteredClients[index]['image']!),
-                                radius: 25,
-                              ),
-                              title: Text(filteredClients[index]['name']!),
-                              subtitle: Text(filteredClients[index]['message']!),
-                              trailing: Text(filteredClients[index]
-                                  ['timestamp']!),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => Clients(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(1.0, 0.0);
+                                const end = Offset.zero;
+                                const curve = Curves.easeInOut;
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                var offsetAnimation = animation.drive(tween);
+                                return SlideTransition(position: offsetAnimation, child: child);
+                              },
                             ),
                           );
                         },
+                        child: Text('View More', style: TextStyle(color: Colors.red)),
                       ),
                     ],
                   ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: filteredClients.length,
+                  itemBuilder: (context, index) {
+                    final client = filteredClients[index];
+                    return ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(client['image']!),
+                      ),
+                      title: Text(client['name']!),
+                      subtitle: Text(client['message']!),
+                      trailing: Text(client['timestamp']!),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation, secondaryAnimation) => InboxScreen(client: client, clientName: '', clientImage: '', clientMessages: null,),
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              const begin = Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
+                              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                              var offsetAnimation = animation.drive(tween);
+                              return SlideTransition(position: offsetAnimation, child: child);
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),

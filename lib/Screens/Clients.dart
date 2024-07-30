@@ -120,6 +120,7 @@ class _ClientsState extends State<Clients> {
 
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: Text('Clients'),
       ),
       body: Padding(
@@ -141,6 +142,7 @@ class _ClientsState extends State<Clients> {
             ),
             Expanded(
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: filteredClients.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -151,8 +153,8 @@ class _ClientsState extends State<Clients> {
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   InboxScreen(
-                            userImage: filteredClients[index]['image']!,
-                            userName: filteredClients[index]['name']!,
+                            clientImage: filteredClients[index]['image']!,
+                            clientName: filteredClients[index]['name']!, clientMessages: null, client: {},
                           ),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
@@ -169,11 +171,14 @@ class _ClientsState extends State<Clients> {
                       );
                     },
                     child: Card(
+                      margin: EdgeInsets.all(8),
+                      elevation: 0,
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage:
                               NetworkImage(filteredClients[index]['image']!),
-                          radius: 25,
+                          radius: 28,
+                          
                         ),
                         title: Text(filteredClients[index]['name']!),
                         subtitle: Text(filteredClients[index]['message']!),

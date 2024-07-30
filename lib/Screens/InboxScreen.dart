@@ -6,7 +6,7 @@ class InboxScreen extends StatefulWidget {
   final String clientImage;
   late String clientMessages;
 
-  InboxScreen({required this.clientName, required this.clientImage, required clientMessages});
+  InboxScreen({required this.clientName, required this.clientImage, required clientMessages, required Map<String, String> client});
 
   @override
   _InboxScreenState createState() => _InboxScreenState();
