@@ -1,8 +1,7 @@
-// ignore_for_file: unused_field
-
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddClientScreen extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class _AddClientScreenState extends State<AddClientScreen> {
   String? _selectedFileName;
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _ssnController = TextEditingController();
-
   @override
   void dispose() {
     _dobController.dispose();
@@ -28,6 +26,7 @@ class _AddClientScreenState extends State<AddClientScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: Text('Add Client'),
       ),
       body: SingleChildScrollView(
@@ -257,14 +256,9 @@ class _AddClientScreenState extends State<AddClientScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(Icons.insert_drive_file, size: 40), // Display file icon
+          Icon(Icons.insert_drive_file),
           SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              _selectedFileName!,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+          Text(_selectedFileName ?? ''),
         ],
       ),
     );
@@ -273,10 +267,10 @@ class _AddClientScreenState extends State<AddClientScreen> {
   Widget _buildAddButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        if (_formKey.currentState?.validate() == true) {
-          _formKey.currentState?.save();
-          // Add client logic here
-          _showClientAddedDialog(context);
+        if (_formKey.currentState!.validate()) {
+          _formKey.currentState!.save();
+          _saveClientDataToFirebase();
+          Navigator.pop(context);
         }
       },
       style: ElevatedButton.styleFrom(
@@ -284,56 +278,25 @@ class _AddClientScreenState extends State<AddClientScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
       ),
-      child: Text(
-        'Add',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-      ),
+      child: Text('Add Client'),
     );
   }
 
-  void _showClientAddedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 50),
-                SizedBox(height: 10),
-                Text(
-                  'Client added',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  ),
-                  child: Text(
-                    'OK',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+  void _saveClientDataToFirebase() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      await firestore.collection('clients').add({
+        'Full Legal Name': _formData['Full Legal Name'],
+        'Address': _formData['Address'],
+        'Email': _formData['Email'],
+        'Date of Birth': _formData['Date of Birth'],
+        'SSN': _formData['SSN'],
+        'File': _selectedFile?.files.single.bytes, // Save file as bytes (or handle file upload as needed)
+      });
+    } catch (e) {
+      print('Error saving client data to Firebase: $e');
+    }
   }
 }
