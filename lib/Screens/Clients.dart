@@ -155,7 +155,7 @@ class _ClientsState extends State<Clients> {
                               (context, animation, secondaryAnimation) =>
                                   InboxScreen(
                             clientImage: filteredClients[index]['image']!,
-                            clientName: filteredClients[index]['name']!, clientMessages: null, client: {},
+                            clientName: filteredClients[index]['name']!, clientMessages: null, client: {}, clientId: '',
                           ),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {

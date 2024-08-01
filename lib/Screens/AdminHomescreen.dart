@@ -310,7 +310,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) => InboxScreen(client: client, clientName: '', clientImage: '', clientMessages: null,),
+                            pageBuilder: (context, animation, secondaryAnimation) => InboxScreen(client: client, clientName: '', clientImage: '', clientMessages: null, clientId: '',),
                             transitionsBuilder: (context, animation, secondaryAnimation, child) {
                               const begin = Offset(1.0, 0.0);
                               const end = Offset.zero;

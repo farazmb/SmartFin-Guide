@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 
 class InboxScreen extends StatefulWidget {
   final String clientName;
   final String clientImage;
-  late String clientMessages;
+  final String clientId; // Add client ID
 
-  InboxScreen({required this.clientName, required this.clientImage, required clientMessages, required Map<String, String> client});
+  InboxScreen({required this.clientName, required this.clientImage, required this.clientId, required Map<String, String> client, required clientMessages});
 
   @override
   _InboxScreenState createState() => _InboxScreenState();
@@ -42,13 +43,29 @@ class _InboxScreenState extends State<InboxScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              reverse: true,
-              children: [
-                _buildMessage('Hello!', true),
-                _buildMessage('Hi, how are you?', false),
-                if (_selectedFile != null) _buildAttachmentPreview(),
-              ],
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('chats')
+                  .doc(widget.clientId)
+                  .collection('messages')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                var messages = snapshot.data!.docs;
+
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    var message = messages[index];
+                    return _buildMessage(message['text'], message['isSentByUser']);
+                  },
+                );
+              },
             ),
           ),
           _buildMessageInput(),
@@ -112,9 +129,12 @@ class _InboxScreenState extends State<InboxScreen> {
   void _sendMessage() {
     final message = _messageController.text;
     if (message.isNotEmpty) {
-      setState(() {
-        // Add message to the chat (example)
+      FirebaseFirestore.instance.collection('chats').doc(widget.clientId).collection('messages').add({
+        'text': message,
+        'isSentByUser': true, // Change this based on who is sending the message
+        'timestamp': FieldValue.serverTimestamp(),
       });
+
       _messageController.clear();
     }
   }
