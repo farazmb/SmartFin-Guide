@@ -298,9 +298,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
-                              pageBuilder: (context, animation,
-                                      secondaryAnimation) =>
-                                  Clients(),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      Clients(),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 const begin = Offset(1.0, 0.0);
@@ -319,12 +319,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           children: [
                             Text(
                               'View more',
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 15),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 15),
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
-                              size: 15,
+                              size: 20,
                               color: Colors.black,
                             ),
                           ],
@@ -346,9 +346,15 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
-                              pageBuilder: (context, animation,
-                                      secondaryAnimation) =>
-                                  InboxScreen(clientName: '', clientImage: '', clientId: '', client: {}, clientMessages: null,),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      InboxScreen(
+                                clientName: '',
+                                clientImage: '',
+                                clientId: '',
+                                client: {},
+                                clientMessages: null,
+                              ),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 const begin = Offset(1.0, 0.0);
@@ -368,8 +374,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           child: Column(
                             children: [
                               CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(client['image']!),
+                                backgroundImage: NetworkImage(client['image']!),
                                 radius: 30,
                               ),
                               SizedBox(height: 10),
@@ -380,13 +385,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               ),
                               Text(
                                 client['message']!,
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 13),
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 13),
                               ),
                               Text(
                                 client['timestamp']!,
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 13),
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 13),
                               ),
                             ],
                           ),
