@@ -141,17 +141,17 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       // Replace these containers with your carousel items
                       Container(
                         width: 150,
-                        margin: EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 11),
                         color: Colors.red,
                       ),
                       Container(
                         width: 150,
-                        margin: EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 11),
                         color: Colors.green,
                       ),
                       Container(
                         width: 150,
-                        margin: EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 11),
                         color: Colors.blue,
                       ),
                     ],
