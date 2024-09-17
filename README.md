@@ -1,6 +1,6 @@
 # SmartFinGuide
 
-**SmartFinGuide** is a Flutter application in development designed for managing client interactions with separate views for admins and clients. The app includes basic features to support client management and communication.
+**SmartFinGuide** is a Flutter application in development designed for managing and updating clients on time interactions with separate views for admin/s and clients. The app includes features to support client management and real time communication.
 
 ## Features
 
