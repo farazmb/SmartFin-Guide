@@ -1,16 +1,22 @@
-# SmartFin Guid
+# SmartFinGuide
 
-A new Flutter project.
+**SmartFinGuide** is a Flutter application in development designed for managing client interactions with separate views for admins and clients. The app includes basic features to support client management and communication.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+### Admin View
+- **Dashboard:** Notification icon and welcome message.
+- **Recent Clients:** Displays client information and recent messages.
+- **Notifications:** Access to an in-app notification screen.
 
-A few resources to get you started if this is your first Flutter project:
+### Client View
+- **Home Screen:** Custom layout for client interactions.
+- **Inbox:** Basic communication features.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## License
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project is currently in development and not yet licensed.
+
+## Contact
+
+For inquiries or more information, please reach out to **farazbutt6026@gmail.com**.
